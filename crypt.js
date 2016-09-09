@@ -1,10 +1,4 @@
-var prompt = require('prompt')
 var fs = require('fs')
-var fast = true
-var fastOptions = {
-    path: 'test',
-    key: 'azerty'
-}
 
 function stringToASCIIArray(string) {
     array = []
@@ -53,17 +47,68 @@ function decode(string, key) {
     }
     stringDecoded = ""
     for (var i = 0; i < tempArray.length - 1; i++) {
-        stringDecoded.concat(String.fromCharCode(tempArray[i]))
-        console.log(String.fromCharCode(tempArray[i]));
+        stringDecoded = stringDecoded.concat(String.fromCharCode(tempArray[i]))
     }
     return stringDecoded
 }
 
-prompt.start()
-prompt.get(['path', 'key'], function(err, results) {
-    if (fast)
-        results = fastOptions
-    console.log(results);
-    fileText = fs.readFileSync(results.path).toString()
-    console.log(decode(fileText, results.key));
+console.log('-------------------------------------------------------------------')
+console.log('-----------------------------EasyCrypt-----------------------------')
+console.log('-------------------------------------------------------------------')
+console.log('')
+console.log('Do you want to encode or decode a file ?')
+console.log('1) Encode')
+console.log('2) Decode')
+console.log('3) Exit')
+
+process.stdin.resume()
+process.stdin.setEncoding('utf8')
+
+process.stdin.on('data', function(input) {
+    input = parseInt(input)
+    if (!isNaN(input) && 1 <= input && input <= 3) {
+        process.stdin.removeAllListeners('data')
+        switch (input) {
+            case 1:
+                console.log('Please enter the path of the file that you want to encode: ')
+                process.stdin.on('data', function(input) {
+                    process.stdin.removeAllListeners('data')
+                    path = input.trim()
+                    console.log('Please enter the key that you want to use to encode your file: ')
+                    process.stdin.on('data', function(input) {
+                        process.stdin.removeAllListeners('data')
+                        key = input
+
+                        fs.writeFileSync(path, encode(fs.readFileSync(path, 'utf8').toString(), key))
+                        console.log('File encoded.')
+                        process.exit()
+                    })
+                })
+                break;
+            case 2:
+                console.log('Please enter the path of the file that you want to decode: ')
+                process.stdin.on('data', function(input) {
+                    process.stdin.removeAllListeners('data')
+                    path = input.trim()
+                    console.log('Please enter the key that you want to use to decode your file: ')
+                    process.stdin.on('data', function(input) {
+                        process.stdin.removeAllListeners('data')
+                        key = input
+
+                        fs.writeFileSync('Output Decoded - ' + path + '.txt', decode(fs.readFileSync(path, 'utf8').toString(), key))
+                        console.log('File decoded.')
+                        process.exit()
+                    })
+                })
+                break;
+            case 3:
+                console.log('Exit');
+                process.exit()
+                break;
+            default:
+
+        }
+    } else {
+        console.log('Please enter a number between 1 and 3.')
+    }
 })
