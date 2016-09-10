@@ -1,0 +1,25 @@
+{
+  "name": "easy-crypt",
+  "version": "1.0.0",
+  "description": "Command-line script to encrypt/decrypt a file with a key",
+  "main": "crypt.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NahisWayard/easy-crypt.git"
+  },
+  "keywords": [
+    "crypt",
+    "key",
+    "node",
+    "js"
+  ],
+  "author": "NahisWayard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NahisWayard/easy-crypt/issues"
+  },
+  "homepage": "https://github.com/NahisWayard/easy-crypt#readme"
+}
